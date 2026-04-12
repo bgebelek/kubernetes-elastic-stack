@@ -1,0 +1,18 @@
+resources:
+  - es-statefulset.yml
+  - kb-deployment.yml
+  - es-service.yml
+  - es-node-discovery-service.yml
+  - kb-service.yml
+
+labels:
+  - pairs:
+      part-of: elastic-stack
+
+configMapGenerator:
+  - name: es-configmap
+    files:
+      - elasticsearch.yml
+  - name: kb-configmap
+    files:
+      - kibana.yml

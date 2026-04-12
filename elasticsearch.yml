@@ -1,0 +1,9 @@
+cluster.name: "kubernetes-cluster"
+xpack.security.enabled: false
+network.host: 0.0.0.0
+cluster.initial_master_nodes:
+  - es-statefulset-0
+  - es-statefulset-1
+discovery.seed_hosts:
+  - es-statefulset-0.es-node-discovery-service.default.svc.cluster.local:9300
+  - es-statefulset-1.es-node-discovery-service.default.svc.cluster.local:9300

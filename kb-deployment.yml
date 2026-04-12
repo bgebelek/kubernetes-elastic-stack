@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"kb-deployment","labels":{"app":"kb-deployment"}},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"kb-deployment"}},"template":{"metadata":{"labels":{"app":"kb-deployment"}},"spec":{"containers":[{"name":"kibana","image":"kibana:9.3.2","resources":{}}]}},"strategy":{}},"status":{}}
+  labels:
+    app: kb-deployment
+  name: kb-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kb-deployment
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: kb-deployment
+    spec:
+      containers:
+      - image: kibana:9.3.2
+        name: kibana
+        resources: {}
+        volumeMounts:
+          - name: kb-volume
+            mountPath: /usr/share/kibana/config/kibana.yml
+            subPath: kibana.yml
+      volumes:
+        - name: kb-volume
+          configMap:
+            name: kb-configmap
+status: {}

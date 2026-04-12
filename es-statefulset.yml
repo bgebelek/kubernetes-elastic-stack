@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: es-statefulset
+  name: es-statefulset
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: es-statefulset
+  serviceName: es-node-discovery-service
+  template:
+    metadata:
+      labels:
+        app: es-statefulset
+    spec:
+      containers:
+      - image: elasticsearch:9.3.2
+        name: elasticsearch
+        resources: 
+          limits:
+            memory: 2Gi
+        volumeMounts:
+          - name: es-volume
+            mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+            subPath: elasticsearch.yml
+      volumes:
+        - name: es-volume
+          configMap:
+            name: es-configmap
+status: {}
