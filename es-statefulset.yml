@@ -25,8 +25,20 @@ spec:
           - name: es-volume
             mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
             subPath: elasticsearch.yml
+          - name: es-persistent-volume-claim
+            mountPath: /usr/share/elasticsearch/data
       volumes:
         - name: es-volume
           configMap:
             name: es-configmap
+  volumeClaimTemplates:
+    - metadata:
+        name: es-persistent-volume-claim
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: es-persistent-volume
 status: {}
