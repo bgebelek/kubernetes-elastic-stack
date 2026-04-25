@@ -27,9 +27,6 @@ spec:
             subPath: elasticsearch.yml
           - name: es-persistent-volume-claim
             mountPath: /usr/share/elasticsearch/data
-      securityContext:
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
       volumes:
         - name: es-volume
           configMap:
