@@ -16,17 +16,30 @@ spec:
         app: es-statefulset
     spec:
       containers:
-      - image: elasticsearch:9.3.2
-        name: elasticsearch
-        resources: 
-          limits:
-            memory: 2Gi
-        volumeMounts:
-          - name: es-volume
-            mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
-            subPath: elasticsearch.yml
-          - name: es-persistent-volume-claim
-            mountPath: /usr/share/elasticsearch/data
+        - image: elasticsearch:9.3.2
+          name: elasticsearch
+          resources: 
+            limits:
+              memory: 2Gi
+          volumeMounts:
+            - name: es-volume
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+              subPath: elasticsearch.yml
+            - name: es-persistent-volume-claim
+              mountPath: /usr/share/elasticsearch/data
+      initContainers:
+        - image: busybox:stable
+          name: es-init-container
+          command:
+            - /bin/sh
+          args:
+            - '-c'	
+            - 'chmod 757 /usr/share/elasticsearch/data && chown 1000:1000 /usr/share/elasticsearch/data'
+          volumeMounts:
+            - name: es-persistent-volume-claim
+              mountPath: /usr/share/elasticsearch/data
+          securityContext:
+            privileged: true
       volumes:
         - name: es-volume
           configMap:
