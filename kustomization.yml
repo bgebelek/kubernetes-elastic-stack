@@ -4,6 +4,8 @@ resources:
   - es-service.yml
   - es-node-discovery-service.yml
   - kb-service.yml
+  - es-persistent-volume-a.yml
+  - es-persistent-volume-b.yml
 
 labels:
   - pairs:
