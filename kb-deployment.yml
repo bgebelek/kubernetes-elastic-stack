@@ -24,7 +24,7 @@ spec:
             mountPath: /usr/share/kibana/config/kibana.yml
             subPath: kibana.yml
         startupProbe:
-          failureThreshold: 12
+          failureThreshold: 6
           periodSeconds: 10
           tcpSocket:
             port: 5601

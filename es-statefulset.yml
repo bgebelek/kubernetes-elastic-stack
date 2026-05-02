@@ -28,7 +28,7 @@ spec:
             - name: es-persistent-volume-claim
               mountPath: /usr/share/elasticsearch/data
           startupProbe:
-            failureThreshold: 12
+            failureThreshold: 6
             periodSeconds: 10 
             tcpSocket:
               port: 9200
