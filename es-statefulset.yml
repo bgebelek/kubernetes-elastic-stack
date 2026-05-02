@@ -27,6 +27,11 @@ spec:
               subPath: elasticsearch.yml
             - name: es-persistent-volume-claim
               mountPath: /usr/share/elasticsearch/data
+          startupProbe:
+            failureThreshold: 12
+            periodSeconds: 10 
+            tcpSocket:
+              port: 9200
       initContainers:
         - image: busybox:stable
           name: es-init-container
