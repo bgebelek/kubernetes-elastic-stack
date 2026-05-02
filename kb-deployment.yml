@@ -28,6 +28,14 @@ spec:
           periodSeconds: 10
           tcpSocket:
             port: 5601
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: /api/status
+            port: 5601
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
       volumes:
         - name: kb-volume
           configMap:
