@@ -40,6 +40,9 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
+          env:
+            - name: NODE_ROLE
+              value: data_frozen
       initContainers:
         - image: busybox:stable
           name: es-init-container
