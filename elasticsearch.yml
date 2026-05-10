@@ -1,6 +1,7 @@
 cluster.name: "kubernetes-cluster"
 xpack.security.enabled: false
 network.host: 0.0.0.0
+node.roles: ${NODE_ROLE}
 cluster.initial_master_nodes:
   - es-statefulset-0
   - es-statefulset-1
