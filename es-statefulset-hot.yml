@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: es-statefulset
-  serviceName: es-node-discovery-service
+  serviceName: es-headless-service-hot-node-discovery
   template:
     metadata:
       labels:
