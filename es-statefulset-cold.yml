@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: es-statefulset-cold
+        part-of: es-statefulset
     spec:
       containers:
         - image: elasticsearch:9.3.2
