@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: es-node-discovery-service
-  name: es-node-discovery-service
+    app: es-headless-service-hot-node-discovery
+  name: es-headless-service-hot-node-discovery
 spec:
   clusterIP: None
   ports:
@@ -12,7 +12,7 @@ spec:
     protocol: TCP
     targetPort: 9300
   selector:
-    app: es-statefulset
+    app: es-statefulset-hot
   type: ClusterIP
 status:
   loadBalancer: {}
