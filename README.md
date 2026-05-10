@@ -25,10 +25,10 @@ This command creates all objects declared in the manifest files using Kustomize.
 
 ### Docker Desktop
 
-Since Docker Desktop runs Minikube inside a restricted virtual machine, a direct connection to the node is not possible. Use the command below to establish a connection with `kb-service`:
+Since Docker Desktop runs Minikube inside a restricted virtual machine, a direct connection to the node is not possible. Use the command below to establish a connection with `kb-nodeport-service`:
 
 ```bash
-minikube service kb-service --url=true
+minikube service kb-nodeport-service --url=true
 ```
 
 > [!TIP]
@@ -45,10 +45,10 @@ Obtain the IP address of the Minikube node by running:
 minikube ip
 ```
 
-Then retrieve the node port for `kb-service`:
+Then retrieve the node port for `kb-nodeport-service`:
 
 ```bash
-kubectl get service kb-service
+kubectl get service kb-nodeport-service
 ```
 
 Since TLS is not configured for this release, use the HTTP protocol to connect to Kibana:

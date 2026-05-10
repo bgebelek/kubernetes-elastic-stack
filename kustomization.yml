@@ -8,7 +8,7 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
-  - kb-deployment.yml
+  - kb-nodeport-service.yml
   - kb-service.yml
 
 labels:
