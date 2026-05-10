@@ -3,8 +3,11 @@ resources:
   - es-statefulset-warm.yml
   - es-statefulset-cold.yml
   - es-statefulset-frozen.yml
+  - es-headless-service-hot-node-discovery
+  - es-headless-service-warm-node-discovery
+  - es-headless-service-cold-node-discovery
+  - es-headless-service-frozen-node-discovery
   - es-service.yml
-  - es-node-discovery-service.yml
   - kb-deployment.yml
   - kb-service.yml
   - es-persistent-volume-a.yml
