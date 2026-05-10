@@ -1,8 +1,11 @@
 resources:
-  - es-statefulset.yml
-  - kb-deployment.yml
+  - es-statefulset-hot.yml
+  - es-statefulset-warm.yml
+  - es-statefulset-cold.yml
+  - es-statefulset-frozen.yml
   - es-service.yml
   - es-node-discovery-service.yml
+  - kb-deployment.yml
   - kb-service.yml
   - es-persistent-volume-a.yml
   - es-persistent-volume-b.yml
