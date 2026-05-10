@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: es-statefulset
-  name: es-statefulset
+    app: es-statefulset-warm
+  name: es-statefulset-warm
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: es-statefulset
+      app: es-statefulset-warm
   serviceName: es-headless-service-warm-node-discovery
   template:
     metadata:
       labels:
-        app: es-statefulset
+        app: es-statefulset-warm
     spec:
       containers:
         - image: elasticsearch:9.3.2
