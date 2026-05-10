@@ -69,5 +69,5 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        storageClassName: es-persistent-volume
+        storageClassName: standard
 status: {}
