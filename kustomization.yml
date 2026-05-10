@@ -1,17 +1,17 @@
 resources:
-  - es-statefulset-hot.yml
-  - es-statefulset-warm.yml
-  - es-statefulset-cold.yml
-  - es-statefulset-frozen.yml
-  - es-headless-service-hot-node-discovery.yml
-  - es-headless-service-warm-node-discovery.yml
   - es-headless-service-cold-node-discovery.yml
   - es-headless-service-frozen-node-discovery.yml
-  - es-service.yml
-  - kb-deployment.yml
-  - kb-service.yml
+  - es-headless-service-hot-node-discovery.yml
+  - es-headless-service-warm-node-discovery.yml
   - es-persistent-volume-a.yml
   - es-persistent-volume-b.yml
+  - es-service.yml
+  - es-statefulset-cold.yml
+  - es-statefulset-frozen.yml
+  - es-statefulset-hot.yml
+  - es-statefulset-warm.yml
+  - kb-deployment.yml
+  - kb-service.yml
 
 labels:
   - pairs:
