@@ -14,5 +14,6 @@ spec:
   selector:
     app: es-statefulset-hot
   type: ClusterIP
+  publishNotReadyAddresses: true
 status:
   loadBalancer: {}
