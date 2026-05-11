@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-persistent-volume-b
+spec:
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/es-persistent-volume-b
+  storageClassName: es-persistent-volume
+  capacity:
+    storage: 5Gi
