@@ -10,6 +10,7 @@ spec:
     matchLabels:
       app: es-statefulset-hot
   serviceName: es-headless-service-hot-node-discovery
+  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
