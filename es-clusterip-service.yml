@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: es-service
-  name: es-service
+    app: es-clusterip-service
+  name: es-clusterip-service
 spec:
   ports:
   - name: 9200-9200
@@ -11,7 +11,7 @@ spec:
     protocol: TCP
     targetPort: 9200
   selector:
-    app: es-statefulset
+    part-of: es-statefulset
   type: ClusterIP
 status:
   loadBalancer: {}

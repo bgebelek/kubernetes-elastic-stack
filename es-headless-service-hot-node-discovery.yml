@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: es-headless-service-hot-node-discovery
+  name: es-headless-service-hot-node-discovery
+spec:
+  clusterIP: None
+  ports:
+  - name: "9300"
+    port: 9300
+    protocol: TCP
+    targetPort: 9300
+  selector:
+    app: es-statefulset-hot
+  type: ClusterIP
+  publishNotReadyAddresses: true
+status:
+  loadBalancer: {}

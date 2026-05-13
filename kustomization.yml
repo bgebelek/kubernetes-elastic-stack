@@ -1,11 +1,23 @@
 resources:
-  - es-statefulset.yml
-  - kb-deployment.yml
-  - es-service.yml
-  - es-node-discovery-service.yml
-  - kb-service.yml
+  - es-clusterip-service.yml
+  - es-headless-service-cold-node-discovery.yml
+  - es-headless-service-frozen-node-discovery.yml
+  - es-headless-service-hot-node-discovery.yml
+  - es-headless-service-warm-node-discovery.yml
   - es-persistent-volume-a.yml
   - es-persistent-volume-b.yml
+  - es-persistent-volume-c.yml
+  - es-persistent-volume-d.yml
+  - es-persistent-volume-e.yml
+  - es-persistent-volume-f.yml
+  - es-persistent-volume-g.yml
+  - es-persistent-volume-h.yml
+  - es-statefulset-cold.yml
+  - es-statefulset-frozen.yml
+  - es-statefulset-hot.yml
+  - es-statefulset-warm.yml
+  - kb-deployment.yml
+  - kb-nodeport-service.yml
 
 labels:
   - pairs:

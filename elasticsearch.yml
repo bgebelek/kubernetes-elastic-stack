@@ -1,9 +1,16 @@
 cluster.name: "kubernetes-cluster"
 xpack.security.enabled: false
 network.host: 0.0.0.0
+node.roles: ${NODE_ROLE}
 cluster.initial_master_nodes:
-  - es-statefulset-0
-  - es-statefulset-1
+  - es-statefulset-hot-0
+  - es-statefulset-hot-1
 discovery.seed_hosts:
-  - es-statefulset-0.es-node-discovery-service.default.svc.cluster.local:9300
-  - es-statefulset-1.es-node-discovery-service.default.svc.cluster.local:9300
+  - es-statefulset-hot-0.es-headless-service-hot-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-hot-1.es-headless-service-hot-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-warm-0.es-headless-service-warm-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-warm-1.es-headless-service-warm-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-cold-0.es-headless-service-cold-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-cold-1.es-headless-service-cold-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-frozen-0.es-headless-service-frozen-node-discovery.default.svc.cluster.local:9300
+  - es-statefulset-frozen-1.es-headless-service-frozen-node-discovery.default.svc.cluster.local:9300
