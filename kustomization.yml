@@ -16,7 +16,7 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
-  - kb-deployment.yml
+  - kb-statefulset.yml
   - kb-nodeport-service.yml
 
 labels:

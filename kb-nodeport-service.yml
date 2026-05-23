@@ -11,7 +11,7 @@ spec:
     protocol: TCP
     targetPort: 5601
   selector:
-    app: kb-deployment
+    app: kb-statefulset
   type: NodePort
 status:
   loadBalancer: {}
