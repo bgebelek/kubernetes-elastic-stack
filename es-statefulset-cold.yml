@@ -47,7 +47,7 @@ spec:
               value: data_cold
       initContainers:
         - image: busybox:stable
-          name: es-init-container
+          name: es-fix-data-dir-permissions
           command:
             - /bin/sh
           args:
