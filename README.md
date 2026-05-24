@@ -15,6 +15,39 @@ After you have installed and configured Minikube, clone this repository by runni
 git clone https://github.com/bgebelek/kubernetes-elastic-stack
 ```
 
+Before applying resources, an internal Certificate Authority (CA) will need to be created to sign digital certificates created by init containers in the pods of statefulset objects. First, create a pod running an Elasticsearch container:
+
+```bash
+kubectl run es-temp --image elasticsearch:9.3.2
+```
+
+Then, create a digital certificate and a private key for the CA:
+
+```bash
+kubectl exec es-temp -- /usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem --out ca.zip
+```
+
+Afterward, encode the ZIP archive using base64:
+
+```bash
+kubectl exec es-temp -- base64 ca.zip
+```
+
+Copy the base64 encoded output from the command above and decode it for local storage:
+
+```bash
+echo '<base64 encoded output>' | base64 -d > ca.zip
+```
+
+The pod can now be deleted:
+
+```bash
+kubectl delete pod es-temp
+```
+
+> [!NOTE]
+> `kubectl cp` cannot be used as the binary for `tar` is absent in the container image for Elasticsearch.
+
 Then, navigate to the cloned repository, ensure you are on the correct tag or branch for your intended release, and execute the command below:
 
 ```bash
