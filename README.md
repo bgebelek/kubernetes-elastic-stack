@@ -15,7 +15,7 @@ After you have installed and configured Minikube, clone this repository by runni
 git clone https://github.com/bgebelek/kubernetes-elastic-stack
 ```
 
-Before applying resources, an internal Certificate Authority (CA) will need to be created to sign digital certificates created by init containers in the pods of statefulset objects. First, create a pod running an Elasticsearch container:
+Before applying resources, an internal Certificate Authority (CA) will need to be created to sign digital certificates created by init containers in the pods of statefulset objects. First, navigate to the cloned repository and execute the command below to create a pod running an Elasticsearch container:
 
 ```bash
 kubectl run es-temp --image elasticsearch:9.3.2
@@ -38,6 +38,8 @@ Copy the base64 encoded output from the command above and decode it for local st
 ```bash
 echo '<base64 encoded output>' | base64 -d > ca.zip
 ```
+> [!NOTE]
+> `kubectl cp` cannot be used as the binary for `tar` is absent in the container image for Elasticsearch.
 
 The pod can now be deleted:
 
@@ -45,10 +47,21 @@ The pod can now be deleted:
 kubectl delete pod es-temp
 ```
 
-> [!NOTE]
-> `kubectl cp` cannot be used as the binary for `tar` is absent in the container image for Elasticsearch.
+A TLS secret type is used to store the certificate and key of the CA. Before referencing these assets, unzip the ZIP archive:
 
-Then, navigate to the cloned repository, ensure you are on the correct tag or branch for your intended release, and execute the command below:
+```bash
+unzip ca.zip && rm ca.zip
+```
+
+The extracted assets can be stored anywhere that is desired. Once relocated, the placeholders in the manifest `ca-tls-secret.yml` can be replaced with the new locations:
+
+```yaml
+data:
+  tls.crt: path/to/ca/cert/file
+  tls.key: path/to/ca/key/files
+```
+
+. . .
 
 ```bash
 kubectl apply -k .
