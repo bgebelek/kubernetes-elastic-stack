@@ -24,11 +24,15 @@ spec:
             limits:
               memory: 2Gi
           volumeMounts:
-            - name: es-volume
+            - name: es-config-volume
               mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
               subPath: elasticsearch.yml
             - name: es-persistent-volume-claim
               mountPath: /usr/share/elasticsearch/data
+            - name: es-ca-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/ca
+            - name: es-node-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/node
           startupProbe:
             failureThreshold: 6
             periodSeconds: 10 
@@ -58,10 +62,30 @@ spec:
               mountPath: /usr/share/elasticsearch/data
           securityContext:
             privileged: true
+        - image: elasticsearch:9.3.2
+          name: es-create-pki-assets
+          resources: 
+            limits:
+              memory: 2Gi
+          command:
+            - /bin/bash
+          args:
+            - '-c'
+            - 'bin/elasticsearch-certutil cert --silent --pem --out config/certs/node/$HOSTNAME.zip --dns $HOSTNAME --name $HOSTNAME --ca-cert config/certs/ca/tls.crt --ca-key config/certs/ca/tls.key && unzip config/certs/node/$HOSTNAME.zip -d config/certs/node && rm config/certs/node/$HOSTNAME.zip'
+          volumeMounts:
+            - name: es-ca-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/ca
+            - name: es-node-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/node
       volumes:
-        - name: es-volume
+        - name: es-config-volume
           configMap:
             name: es-configmap
+        - name: es-ca-certs-volume
+          secret:
+            secretName: ca-tls-secret
+        - name: es-node-certs-volume
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: es-persistent-volume-claim
