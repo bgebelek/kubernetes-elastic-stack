@@ -1,4 +1,6 @@
 resources:
+  - ca-tls-secret.yml
+  - es-auth-secret.yml
   - es-clusterip-service.yml
   - es-headless-service-cold-node-discovery.yml
   - es-headless-service-frozen-node-discovery.yml

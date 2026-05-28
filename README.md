@@ -61,6 +61,14 @@ data:
   tls.key: path/to/ca/key/files
 ```
 
+Next, a password will need to be created for the `elastic` user. The value for the key `password` in the manifest `es-auth-secret.yml` can be changed to accomplish this.
+
+```yaml
+stringData:
+  username: elastic
+  password: changeme #assign your new password here
+```
+
 . . .
 
 ```bash

@@ -49,6 +49,11 @@ spec:
           env:
             - name: NODE_ROLE
               value: master,data_content,data_hot
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: es-auth-secret
+                  key: password
       initContainers:
         - image: busybox:stable
           name: es-fix-data-dir-permissions
