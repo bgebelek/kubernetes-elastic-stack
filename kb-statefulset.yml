@@ -39,6 +39,17 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 60
             periodSeconds: 10
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: username
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: password
       initContainers:
         - image: elasticsearch:9.3.2
           name: kb-create-pki-assets

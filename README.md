@@ -61,7 +61,7 @@ data:
   tls.key: path/to/ca/key/files
 ```
 
-Next, a password will need to be created for the `elastic` user. The value for the key `password` in the manifest `es-auth-secret.yml` can be changed to accomplish this.
+Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
 
 ```yaml
 stringData:

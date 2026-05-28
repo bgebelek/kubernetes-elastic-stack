@@ -18,6 +18,7 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
+  - kb-auth-secret.yml
   - kb-statefulset.yml
   - kb-nodeport-service.yml
 
