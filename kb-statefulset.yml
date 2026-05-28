@@ -15,28 +15,53 @@ spec:
         app: kb-statefulset
     spec:
       containers:
-      - image: kibana:9.3.2
-        name: kibana
-        resources: {}
-        volumeMounts:
-          - name: kb-volume
-            mountPath: /usr/share/kibana/config/kibana.yml
-            subPath: kibana.yml
-        startupProbe:
-          failureThreshold: 6
-          periodSeconds: 10
-          tcpSocket:
-            port: 5601
-        readinessProbe:
-          failureThreshold: 6
-          httpGet:
-            path: /api/status
-            port: 5601
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 10
+        - image: kibana:9.3.2
+          name: kibana
+          resources: {}
+          volumeMounts:
+            - name: kb-volume
+              mountPath: /usr/share/kibana/config/kibana.yml
+              subPath: kibana.yml
+            - name: kb-ca-certs-volume
+              mountPath: /usr/share/kibana/config/certs/ca
+            - name: kb-instance-certs-volume
+              mountPath: /usr/share/kibana/config/certs/instance
+          startupProbe:
+            failureThreshold: 6
+            periodSeconds: 10
+            tcpSocket:
+              port: 5601
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /api/status
+              port: 5601
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+      initContainers:
+        - image: elasticsearch:9.3.2
+          name: kb-create-pki-assets
+          resources: 
+            limits:
+              memory: 2Gi
+          command:
+            - /bin/bash
+          args:
+            - '-c'
+            - 'bin/elasticsearch-certutil cert --silent --pem --out config/certs/instance/$HOSTNAME.zip --dns $HOSTNAME --name $HOSTNAME --ca-cert config/certs/ca/tls.crt --ca-key config/certs/ca/tls.key && unzip config/certs/instance/$HOSTNAME.zip -d config/certs/instance && rm config/certs/instance/$HOSTNAME.zip'
+          volumeMounts:
+            - name: kb-ca-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/ca
+            - name: kb-instance-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/instance
       volumes:
         - name: kb-volume
           configMap:
             name: kb-configmap
+        - name: kb-ca-certs-volume
+          secret:
+            secretName: ca-tls-secret
+        - name: kb-instance-certs-volume
+          emptyDir: {}
 status: {}
