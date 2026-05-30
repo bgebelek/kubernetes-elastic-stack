@@ -1,5 +1,4 @@
 cluster.name: "kubernetes-cluster"
-xpack.security.enabled: false
 network.host: 0.0.0.0
 node.roles: ${NODE_ROLE}
 cluster.initial_master_nodes:
@@ -14,3 +13,21 @@ discovery.seed_hosts:
   - es-statefulset-cold-1.es-headless-service-cold-node-discovery.default.svc.cluster.local:9300
   - es-statefulset-frozen-0.es-headless-service-frozen-node-discovery.default.svc.cluster.local:9300
   - es-statefulset-frozen-1.es-headless-service-frozen-node-discovery.default.svc.cluster.local:9300
+xpack:
+  security:
+    enabled: true
+    authc:
+      api_key:
+        enabled: true
+    http:
+      ssl:
+        enabled: true
+        key: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.key
+        certificate: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.crt
+        certificate_authorities: /usr/share/elasticsearch/config/certs/ca/tls.crt
+    transport:
+      ssl:
+        enabled: true
+        key: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.key
+        certificate: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.crt
+        certificate_authorities: /usr/share/elasticsearch/config/certs/ca/tls.crt
