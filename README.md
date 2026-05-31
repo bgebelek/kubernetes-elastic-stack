@@ -21,19 +21,19 @@ Before applying resources, an internal Certificate Authority (CA) will need to b
 kubectl run es-temp --image elasticsearch:9.3.2
 ```
 
-Then, create a digital certificate and a private key for the CA:
+Next, create a digital certificate and a private key for the CA:
 
 ```bash
 kubectl exec es-temp -- /usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem --out ca.zip
 ```
 
-Afterward, encode the ZIP archive using base64:
+Subsequently, encode the ZIP archive using base64:
 
 ```bash
 kubectl exec es-temp -- base64 ca.zip
 ```
 
-Copy the base64 encoded output from the command above and decode it for local storage:
+Copy the base64-encoded output from the command above and decode it for local storage:
 
 ```bash
 echo '<base64 encoded output>' | base64 -d > ca.zip
@@ -41,7 +41,7 @@ echo '<base64 encoded output>' | base64 -d > ca.zip
 > [!NOTE]
 > `kubectl cp` cannot be used as the binary for `tar` is absent in the container image for Elasticsearch.
 
-The pod can now be deleted:
+Once the necessary steps are completed, you can delete the pod:
 
 ```bash
 kubectl delete pod es-temp
@@ -63,13 +63,7 @@ data:
 
 Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
 
-```yaml
-stringData:
-  username: elastic
-  password: changeme #assign your new password here
-```
-
-. . .
+Now, resources can be applied with Kustomize as shown below:
 
 ```bash
 kubectl apply -k .
@@ -82,7 +76,7 @@ This command creates all objects declared in the manifest files using Kustomize.
 Since Docker Desktop runs Minikube inside a restricted virtual machine, a direct connection to the node is not possible. Use the command below to establish a connection with `kb-nodeport-service`:
 
 ```bash
-minikube service kb-nodeport-service --url=true
+minikube service kb-nodeport-service --https=true --url=true
 ```
 
 > [!TIP]
@@ -105,10 +99,10 @@ Then retrieve the node port for `kb-nodeport-service`:
 kubectl get service kb-nodeport-service
 ```
 
-Since TLS is not configured for this release, use the HTTP protocol to connect to Kibana:
+Since TLS is configured for this release, use the HTTPS protocol to connect to Kibana:
 
 ```bash
-http://<node-ip>:<node-port>
+https://<node-ip>:<node-port>
 ```
 
 ## Cleanup
