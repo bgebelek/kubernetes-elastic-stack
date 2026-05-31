@@ -15,7 +15,55 @@ After you have installed and configured Minikube, clone this repository by runni
 git clone https://github.com/bgebelek/kubernetes-elastic-stack
 ```
 
-Then, navigate to the cloned repository, ensure you are on the correct tag or branch for your intended release, and execute the command below:
+Before applying resources, an internal Certificate Authority (CA) will need to be created to sign digital certificates created by init containers in the pods of statefulset objects. First, navigate to the cloned repository and execute the command below to create a pod running an Elasticsearch container:
+
+```bash
+kubectl run es-temp --image elasticsearch:9.3.2
+```
+
+Next, create a digital certificate and a private key for the CA:
+
+```bash
+kubectl exec es-temp -- /usr/share/elasticsearch/bin/elasticsearch-certutil ca --pem --out ca.zip
+```
+
+Subsequently, encode the ZIP archive using base64:
+
+```bash
+kubectl exec es-temp -- base64 ca.zip
+```
+
+Copy the base64-encoded output from the command above and decode it for local storage:
+
+```bash
+echo '<base64 encoded output>' | base64 -d > ca.zip
+```
+> [!NOTE]
+> `kubectl cp` cannot be used as the binary for `tar` is absent in the container image for Elasticsearch.
+
+Once the necessary steps are completed, you can delete the pod:
+
+```bash
+kubectl delete pod es-temp
+```
+
+A TLS secret type is used to store the certificate and key of the CA. Before referencing these assets, unzip the ZIP archive:
+
+```bash
+unzip ca.zip && rm ca.zip
+```
+
+The extracted assets can be stored anywhere that is desired. Once relocated, the placeholders in the manifest `ca-tls-secret.yml` can be replaced with the new locations:
+
+```yaml
+data:
+  tls.crt: path/to/ca/cert/file
+  tls.key: path/to/ca/key/file
+```
+
+Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
+
+Now, resources can be applied with Kustomize as shown below:
 
 ```bash
 kubectl apply -k .
@@ -28,7 +76,7 @@ This command creates all objects declared in the manifest files using Kustomize.
 Since Docker Desktop runs Minikube inside a restricted virtual machine, a direct connection to the node is not possible. Use the command below to establish a connection with `kb-nodeport-service`:
 
 ```bash
-minikube service kb-nodeport-service --url=true
+minikube service kb-nodeport-service --https=true --url=true
 ```
 
 > [!TIP]
@@ -51,10 +99,10 @@ Then retrieve the node port for `kb-nodeport-service`:
 kubectl get service kb-nodeport-service
 ```
 
-Since TLS is not configured for this release, use the HTTP protocol to connect to Kibana:
+Since TLS is configured for this release, use the HTTPS protocol to connect to Kibana:
 
 ```bash
-http://<node-ip>:<node-port>
+https://<node-ip>:<node-port>
 ```
 
 ## Cleanup

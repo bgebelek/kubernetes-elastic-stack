@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: kb-statefulset
+  name: kb-statefulset
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kb-statefulset
+  template:
+    metadata:
+      labels:
+        app: kb-statefulset
+    spec:
+      containers:
+        - image: kibana:9.3.2
+          name: kibana
+          resources: {}
+          volumeMounts:
+            - name: kb-volume
+              mountPath: /usr/share/kibana/config/kibana.yml
+              subPath: kibana.yml
+            - name: kb-ca-certs-volume
+              mountPath: /usr/share/kibana/config/certs/ca
+            - name: kb-instance-certs-volume
+              mountPath: /usr/share/kibana/config/certs/instance
+          startupProbe:
+            failureThreshold: 6
+            periodSeconds: 10
+            tcpSocket:
+              port: 5601
+          readinessProbe:
+            failureThreshold: 6
+            exec:
+              command:
+                - '/bin/bash'
+                - '-c'
+                - 'curl -sI --cacert /usr/share/kibana/config/certs/ca/tls.crt https://127.0.0.1:5601/login?next=%2F | grep -q "HTTP/2 200"'
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: username
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: password
+      initContainers:
+        - image: elasticsearch:9.3.2
+          name: kb-create-pki-assets
+          resources: 
+            limits:
+              memory: 2Gi
+          command:
+            - /bin/bash
+          args:
+            - '-c'
+            - 'bin/elasticsearch-certutil cert --silent --pem --out config/certs/instance/$HOSTNAME.zip --dns $HOSTNAME,localhost --ip 127.0.0.1 --name $HOSTNAME --ca-cert config/certs/ca/tls.crt --ca-key config/certs/ca/tls.key && unzip config/certs/instance/$HOSTNAME.zip -d config/certs/instance && rm config/certs/instance/$HOSTNAME.zip'
+          volumeMounts:
+            - name: kb-ca-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/ca
+            - name: kb-instance-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs/instance
+        - image: nicolaka/netshoot:latest
+          name: kb-check-auth
+          command:
+            - /bin/sh
+          args:
+            - '-c'
+            - 'until curl -sIX GET --cacert /mnt/ca/tls.crt -H "Authorization: Basic $(echo -n $ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD | base64)" https://es-clusterip-service:9200/_security/_authenticate | grep -q "HTTP/1.1 200 OK"; do sleep 30s; done'
+          volumeMounts:
+            - name: kb-ca-certs-volume
+              mountPath: /mnt/ca
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: username
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kb-auth-secret
+                  key: password
+      volumes:
+        - name: kb-volume
+          configMap:
+            name: kb-configmap
+        - name: kb-ca-certs-volume
+          secret:
+            secretName: ca-tls-secret
+        - name: kb-instance-certs-volume
+          emptyDir: {}
+status: {}

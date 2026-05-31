@@ -1,4 +1,6 @@
 resources:
+  - ca-tls-secret.yml
+  - es-auth-secret.yml
   - es-clusterip-service.yml
   - es-headless-service-cold-node-discovery.yml
   - es-headless-service-frozen-node-discovery.yml
@@ -16,7 +18,9 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
-  - kb-deployment.yml
+  - kb-auth-secret.yml
+  - kb-service-account-setup.yml
+  - kb-statefulset.yml
   - kb-nodeport-service.yml
 
 labels:

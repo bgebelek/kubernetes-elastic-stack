@@ -1,4 +1,13 @@
-server.host: "0.0.0.0"
-server.shutdownTimeout: "5s"
-elasticsearch.hosts: [ "http://es-clusterip-service:9200" ]
 monitoring.ui.container.elasticsearch.enabled: true
+server:
+  host: "0.0.0.0"
+  shutdownTimeout: "5s"
+  ssl:
+    enabled: true
+    certificate: /usr/share/kibana/config/certs/instance/${HOSTNAME}/${HOSTNAME}.crt
+    key: /usr/share/kibana/config/certs/instance/${HOSTNAME}/${HOSTNAME}.key
+elasticsearch:
+  hosts: 
+    - https://es-clusterip-service:9200
+  ssl:
+    certificateAuthorities: /usr/share/kibana/config/certs/ca/tls.crt
