@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: flt-clusterip-service
+  name: flt-clusterip-service
+spec:
+  ports:
+  - name: 8220-8220
+    port: 8220
+    protocol: TCP
+    targetPort: 8220
+  selector:
+    app: flt-deployment
+  type: ClusterIP
+status:
+  loadBalancer: {}
