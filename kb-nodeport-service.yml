@@ -6,12 +6,12 @@ metadata:
   name: kb-nodeport-service
 spec:
   ports:
-  - name: 5601-5601
-    port: 5601
-    protocol: TCP
-    targetPort: 5601
+    - name: 5601-5601
+      port: 5601
+      protocol: TCP
+      targetPort: 5601
   selector:
-    app: kb-statefulset
+    app: kb-deployment
   type: NodePort
 status:
   loadBalancer: {}
