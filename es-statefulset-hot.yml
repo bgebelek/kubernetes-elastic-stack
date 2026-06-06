@@ -49,7 +49,7 @@ spec:
             periodSeconds: 10
           env:
             - name: NODE_ROLE
-              value: master,data_content,data_hot
+              value: master,data_content,data_hot,ingest
             - name: ELASTIC_PASSWORD
               valueFrom:
                 secretKeyRef:
