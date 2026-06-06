@@ -53,12 +53,12 @@ A TLS secret type is used to store the certificate and key of the CA. Before ref
 unzip ca.zip && rm ca.zip
 ```
 
-The extracted assets can be stored anywhere that is desired. Once relocated, the placeholders in the manifest `ca-tls-secret.yml` can be replaced with the new locations:
+The extracted assets can be stored anywhere that is desired. Once relocated, the placeholders in the manifest `ca-tls-secret.yml` can be replaced with base64-encoded values:
 
 ```yaml
 data:
-  tls.crt: path/to/ca/cert/file
-  tls.key: path/to/ca/key/file
+  tls.crt: 'REPLACE_WITH_BASE64_CERT'
+  tls.key: 'REPLACE_WITH_BASE64_KEY'
 ```
 
 Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
