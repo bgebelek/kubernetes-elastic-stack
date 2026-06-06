@@ -10,7 +10,10 @@ resources:
   - es-persistent-volume-d.yml
   - es-statefulset-cold.yml
   - es-statefulset-hot.yml
+  - flt-clusterip-service.yml
+  - flt-deployment.yml
   - kb-auth-secret.yml
+  - kb-clusterip-service.yml
   - kb-enc-key-secret.yml
   - kb-deployment.yml
   - kb-service-account-setup.yml

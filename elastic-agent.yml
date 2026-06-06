@@ -1,0 +1,14 @@
+outputs:
+  default:
+    type: elasticsearch
+    hosts:
+      - https://es-clusterip-service:9200
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+    preset: balanced
+fleet:
+  kibana:
+    hosts:
+      - https://kb-clusterip-service:5601
+    ssl.certificate_authorities:
+      - /mnt/certs/ca/tls.crt
