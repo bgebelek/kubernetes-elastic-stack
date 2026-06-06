@@ -19,8 +19,8 @@ resources:
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
   - kb-auth-secret.yml
+  - kb-deployment.yml
   - kb-service-account-setup.yml
-  - kb-statefulset.yml
   - kb-nodeport-service.yml
 
 labels:

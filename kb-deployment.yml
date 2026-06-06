@@ -1,25 +1,25 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   labels:
-    app: kb-statefulset
-  name: kb-statefulset
+    app: kb-deployment
+  name: kb-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: kb-statefulset
+      app: kb-deployment
   template:
     metadata:
       labels:
-        app: kb-statefulset
+        app: kb-deployment
     spec:
       containers:
         - image: kibana:9.3.2
           name: kibana
           resources: {}
           volumeMounts:
-            - name: kb-volume
+            - name: kb-config-volume
               mountPath: /usr/share/kibana/config/kibana.yml
               subPath: kibana.yml
             - name: kb-ca-certs-volume
@@ -89,7 +89,7 @@ spec:
                   name: kb-auth-secret
                   key: password
       volumes:
-        - name: kb-volume
+        - name: kb-config-volume
           configMap:
             name: kb-configmap
         - name: kb-ca-certs-volume
