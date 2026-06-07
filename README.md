@@ -63,7 +63,7 @@ data:
 
 Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
 
-TODO: Instruct users on how to create an encryption key for Kibana.
+TODO: Instruct users on how to create an encryption key for Kibana; inform users to place CA certificate in Kibana config file for es output.
 
 Now, resources can be applied with Kustomize as shown below:
 
