@@ -53,17 +53,29 @@ A TLS secret type is used to store the certificate and key of the CA. Before ref
 unzip ca.zip && rm ca.zip
 ```
 
-The extracted assets can be stored anywhere that is desired. Once relocated, the placeholders in the manifest `ca-tls-secret.yml` can be replaced with base64-encoded values:
+The extracted assets can be stored anywhere desired. Once relocated, replace the placeholders in `ca-tls-secret.yml` with base64-encoded values. Additionally, the CA certificate in ASCII (PEM) format must be added to the `xpack.fleet.outputs[n].ssl.certificate_authorities` setting in `kibana.yml`.
 
-```yaml
-data:
-  tls.crt: 'REPLACE_WITH_BASE64_CERT'
-  tls.key: 'REPLACE_WITH_BASE64_KEY'
+Next, set passwords for the `elastic` and `kibana_system` users by updating the `password` key in `es-auth-secret.yml` and `kb-auth-secret.yml` respectively.
+
+An encryption key is required for Fleet to function in Kibana and is also recommended for protecting saved objects and session data stored in internal Elasticsearch indices. Generate one using a temporary pod running a Kibana container:
+
+```bash
+kubectl run kb-temp --image=kibana:9.3.2 --rm=true -i -t -- /bin/bash
 ```
 
-Next, passwords will need to be created for the `elastic` and `kibana_system` users. The value for the key `password` in the manifest files `es-auth-secret.yml` and `kb-auth-secret.yml` can be changed to accomplish this.
+Once inside the container, run:
 
-TODO: Instruct users on how to create an encryption key for Kibana; inform users to place CA certificate in Kibana config file for es output.
+```bash
+bin/kibana-encryption-keys generate -i
+```
+
+When prompted, generate a key only for `xpack.encryptedSavedObjects.encryptionKey` and answer `N` to the remaining prompts. Copy the generated value and base64-encode it:
+
+```bash
+echo -n <key> | base64
+```
+
+Place the encoded value in the `data` field of `kb-enc-key-secret.yml`.
 
 Now, resources can be applied with Kustomize as shown below:
 
