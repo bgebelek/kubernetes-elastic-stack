@@ -11,3 +11,30 @@ elasticsearch:
     - https://es-clusterip-service:9200
   ssl:
     certificateAuthorities: /usr/share/kibana/config/certs/ca/tls.crt
+xpack:
+  fleet:
+    packages:
+      - name: fleet_server
+        version: latest
+    agentPolicies:
+      - name: Fleet Server Policy
+        id: fleet-server-policy
+        namespace: default
+        package_policies:
+          - name: fleet_server
+            package:
+              name: fleet_server
+    outputs:
+      - id: elasticsearch-output
+        name: Preconfigured Elasticsearch Output
+        type: elasticsearch
+        hosts:
+          - https://es-clusterip-service:9200
+        is_default: true
+        is_default_monitoring: true
+        ssl:
+          certificate_authorities:
+            - |
+              Embed ASCII formatted certificate here.
+  encryptedSavedObjects:
+    encryptionKey: ${ENCRYPTION_KEY}

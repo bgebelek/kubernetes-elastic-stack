@@ -18,9 +18,14 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
+  - flt-clusterip-service.yml
+  - flt-deployment.yml
+  - flt-nodeport-service.yml
   - kb-auth-secret.yml
+  - kb-clusterip-service.yml
+  - kb-enc-key-secret.yml
+  - kb-deployment.yml
   - kb-service-account-setup.yml
-  - kb-statefulset.yml
   - kb-nodeport-service.yml
 
 labels:
