@@ -3,12 +3,9 @@ network.host: 0.0.0.0
 node.roles: ${NODE_ROLE}
 cluster.initial_master_nodes:
   - es-statefulset-hot-0
-  - es-statefulset-hot-1
 discovery.seed_hosts:
   - es-statefulset-hot-0.es-headless-service-hot-node-discovery.default.svc.cluster.local:9300
-  - es-statefulset-hot-1.es-headless-service-hot-node-discovery.default.svc.cluster.local:9300
   - es-statefulset-cold-0.es-headless-service-cold-node-discovery.default.svc.cluster.local:9300
-  - es-statefulset-cold-1.es-headless-service-cold-node-discovery.default.svc.cluster.local:9300
 xpack:
   security:
     enabled: true
