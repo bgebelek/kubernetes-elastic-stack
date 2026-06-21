@@ -1,4 +1,5 @@
 resources:
+  - ca-issuer.yml
   - ca-tls-secret.yml
   - es-auth-secret.yml
   - es-clusterip-service.yml
@@ -18,10 +19,12 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
+  - flt-certificate.yml
   - flt-clusterip-service.yml
   - flt-deployment.yml
   - flt-nodeport-service.yml
   - kb-auth-secret.yml
+  - kb-certificate.yml
   - kb-clusterip-service.yml
   - kb-enc-key-secret.yml
   - kb-deployment.yml
