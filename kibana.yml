@@ -4,13 +4,13 @@ server:
   shutdownTimeout: "5s"
   ssl:
     enabled: true
-    certificate: /usr/share/kibana/config/certs/instance/${HOSTNAME}/${HOSTNAME}.crt
-    key: /usr/share/kibana/config/certs/instance/${HOSTNAME}/${HOSTNAME}.key
+    certificate: /usr/share/kibana/config/certs/tls.crt
+    key: /usr/share/kibana/config/certs/tls.key
 elasticsearch:
   hosts: 
     - https://es-clusterip-service:9200
   ssl:
-    certificateAuthorities: /usr/share/kibana/config/certs/ca/tls.crt
+    certificateAuthorities: /usr/share/kibana/config/certs/ca.crt
 xpack:
   fleet:
     packages:
