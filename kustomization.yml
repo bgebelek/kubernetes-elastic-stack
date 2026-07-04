@@ -7,6 +7,8 @@ resources:
   - es-headless-service-hot-node-discovery.yml
   - es-persistent-volume-a.yml
   - es-persistent-volume-b.yml
+  - es-persistent-volume-c.yml
+  - es-persistent-volume-d.yml
   - es-statefulset-cold.yml
   - es-statefulset-hot.yml
   - flt-certificate.yml
