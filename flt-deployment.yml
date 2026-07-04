@@ -20,32 +20,28 @@ spec:
           name: elastic-agent
           resources: {}
           env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
             - name: FLEET_SERVER_ENABLE
               value: 'true'
             - name: FLEET_SERVER_POLICY_ID
               value: fleet-server-policy
             - name: FLEET_SERVER_CERT
-              value: /mnt/certs/instance/$(POD_NAME)/$(POD_NAME).crt
+              value: /mnt/certs/tls.crt
             - name: FLEET_SERVER_CERT_KEY
-              value: /mnt/certs/instance/$(POD_NAME)/$(POD_NAME).key
+              value: /mnt/certs/tls.key
             - name: FLEET_SERVER_PORT
               value: '8220'
             - name: FLEET_URL
               value: https://flt-clusterip-service:8220
             - name: FLEET_CA
-              value: /mnt/certs/ca/tls.crt
+              value: /mnt/certs/ca.crt
             - name: FLEET_SERVER_ELASTICSEARCH_HOST
               value: https://es-clusterip-service:9200
             - name: FLEET_SERVER_ELASTICSEARCH_CA
-              value: /mnt/certs/ca/tls.crt
+              value: /mnt/certs/ca.crt
             - name: KIBANA_FLEET_HOST
               value: https://kb-clusterip-service:5601
             - name: KIBANA_CA
-              value: /mnt/certs/ca/tls.crt
+              value: /mnt/certs/ca.crt
             - name: KIBANA_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -62,45 +58,21 @@ spec:
                   key: password
                   name: es-auth-secret
           volumeMounts:
-            - name: flt-ca-certs-volume
-              mountPath: /mnt/certs/ca
-            - name: flt-instance-certs-volume
-              mountPath: /mnt/certs/instance
+            - name: flt-certs-volume
+              mountPath: /mnt/certs
       initContainers:
-        - image: elasticsearch:9.3.2
-          name: flt-create-pki-assets
-          resources: 
-            limits:
-              memory: 2Gi
-          command:
-            - /bin/bash
-          args:
-            - '-c'
-            - 'bin/elasticsearch-certutil cert --silent --pem --out config/certs/instance/$HOSTNAME.zip --dns flt-clusterip-service,$HOSTNAME,localhost --ip $POD_IP,127.0.0.1 --name $HOSTNAME --ca-cert config/certs/ca/tls.crt --ca-key config/certs/ca/tls.key && unzip config/certs/instance/$HOSTNAME.zip -d config/certs/instance && rm config/certs/instance/$HOSTNAME.zip'
-          env:
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-          volumeMounts:
-            - name: flt-ca-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/ca
-            - name: flt-instance-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/instance
         - image: nicolaka/netshoot:latest
           name: flt-check-kb-running
           command:
             - /bin/sh
           args:
             - '-c'
-            - 'until curl -sI --cacert /mnt/ca/tls.crt https://kb-clusterip-service:5601/login?next=%2F | grep -q "HTTP/2 200"; do sleep 30s; done'
+            - 'until curl -sI --cacert /mnt/certs/ca.crt https://kb-clusterip-service:5601/login?next=%2F | grep -q "HTTP/2 200"; do sleep 30s; done'
           volumeMounts:
-            - name: flt-ca-certs-volume
-              mountPath: /mnt/ca
+            - name: flt-certs-volume
+              mountPath: /mnt/certs
       volumes:
-        - name: flt-ca-certs-volume
+        - name: flt-certs-volume
           secret:
-            secretName: ca-tls-secret
-        - name: flt-instance-certs-volume
-          emptyDir: {}
+            secretName: flt-tls-secret
 status: {}

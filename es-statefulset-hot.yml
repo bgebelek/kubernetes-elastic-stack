@@ -29,10 +29,8 @@ spec:
               subPath: elasticsearch.yml
             - name: es-persistent-volume-claim
               mountPath: /usr/share/elasticsearch/data
-            - name: es-ca-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/ca
-            - name: es-node-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/node
+            - name: es-certs-volume
+              mountPath: /usr/share/elasticsearch/config/certs
           startupProbe:
             failureThreshold: 6
             periodSeconds: 10 
@@ -44,10 +42,12 @@ spec:
               command:
                 - '/bin/bash'
                 - '-c'
-                - 'curl --cacert /usr/share/elasticsearch/config/certs/ca/tls.crt https://127.0.0.1:9200 | grep -q "missing authentication credentials"'
+                - 'curl --cacert /usr/share/elasticsearch/config/certs/ca.crt https://$HOSTNAME.es-headless-service-hot-node-discovery.default.svc.cluster.local:9200 | grep -q "missing authentication credentials"'
             initialDelaySeconds: 60
             periodSeconds: 10
           env:
+            - name: HEADLESS_SERVICE
+              value: es-headless-service-hot-node-discovery
             - name: NODE_ROLE
               value: master,data_content,data_hot,ingest
             - name: ELASTIC_PASSWORD
@@ -68,37 +68,20 @@ spec:
               mountPath: /usr/share/elasticsearch/data
           securityContext:
             privileged: true
-        - image: elasticsearch:9.3.2
-          name: es-create-pki-assets
-          resources: 
-            limits:
-              memory: 2Gi
-          command:
-            - /bin/bash
-          args:
-            - '-c'
-            - 'bin/elasticsearch-certutil cert --silent --pem --out config/certs/node/$HOSTNAME.zip --dns es-clusterip-service,localhost,$HOSTNAME,$HOSTNAME.$HEADLESS_SERVICE.default.svc.cluster.local --ip 127.0.0.1,$POD_IP --name $HOSTNAME --ca-cert config/certs/ca/tls.crt --ca-key config/certs/ca/tls.key && unzip config/certs/node/$HOSTNAME.zip -d config/certs/node && rm config/certs/node/$HOSTNAME.zip'
-          env:
-            - name: HEADLESS_SERVICE
-              value: es-headless-service-hot-node-discovery
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-          volumeMounts:
-            - name: es-ca-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/ca
-            - name: es-node-certs-volume
-              mountPath: /usr/share/elasticsearch/config/certs/node
       volumes:
         - name: es-config-volume
           configMap:
             name: es-configmap
-        - name: es-ca-certs-volume
-          secret:
-            secretName: ca-tls-secret
-        - name: es-node-certs-volume
-          emptyDir: {}
+        - name: es-certs-volume
+          csi:
+            driver: csi.cert-manager.io
+            readOnly: true
+            volumeAttributes:
+              csi.cert-manager.io/duration: 8760h
+              csi.cert-manager.io/renew-before: 360h
+              csi.cert-manager.io/dns-names: ${POD_NAME}.es-headless-service-hot-node-discovery.default.svc.cluster.local,${POD_NAME},es-clusterip-service
+              csi.cert-manager.io/ip-sans: 127.0.0.1
+              csi.cert-manager.io/issuer-name: ca-issuer
   volumeClaimTemplates:
     - metadata:
         name: es-persistent-volume-claim

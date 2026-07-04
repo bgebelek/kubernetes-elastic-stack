@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kb-certificate
+spec:
+  secretName: kb-tls-secret
+  duration: 8760h
+  renewBefore: 360h
+  isCA: false
+  dnsNames:
+    - kb-clusterip-service
+  ipAddresses:
+    - 127.0.0.1
+  issuerRef:
+    name: ca-issuer
