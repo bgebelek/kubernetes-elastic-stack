@@ -1,5 +1,5 @@
 cluster.name: "kubernetes-cluster"
-network.host: 0.0.0.0
+network.host: ${HOSTNAME}.${HEADLESS_SERVICE}.default.svc.cluster.local
 node.roles: ${NODE_ROLE}
 cluster.initial_master_nodes:
   - es-statefulset-hot-0
@@ -15,12 +15,12 @@ xpack:
     http:
       ssl:
         enabled: true
-        key: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.key
-        certificate: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.crt
-        certificate_authorities: /usr/share/elasticsearch/config/certs/ca/tls.crt
+        key: /usr/share/elasticsearch/config/certs/tls.key
+        certificate: /usr/share/elasticsearch/config/certs/tls.crt
+        certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
     transport:
       ssl:
         enabled: true
-        key: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.key
-        certificate: /usr/share/elasticsearch/config/certs/node/${HOSTNAME}/${HOSTNAME}.crt
-        certificate_authorities: /usr/share/elasticsearch/config/certs/ca/tls.crt
+        key: /usr/share/elasticsearch/config/certs/tls.key
+        certificate: /usr/share/elasticsearch/config/certs/tls.crt
+        certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
