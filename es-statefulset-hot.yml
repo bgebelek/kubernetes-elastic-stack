@@ -79,7 +79,7 @@ spec:
             volumeAttributes:
               csi.cert-manager.io/duration: 8760h
               csi.cert-manager.io/renew-before: 360h
-              csi.cert-manager.io/dns-names: ${POD_NAME}.es-headless-service-hot-node-discovery.default.svc.cluster.local,${POD_NAME}
+              csi.cert-manager.io/dns-names: ${POD_NAME}.es-headless-service-hot-node-discovery.default.svc.cluster.local,${POD_NAME},es-clusterip-service
               csi.cert-manager.io/ip-sans: 127.0.0.1
               csi.cert-manager.io/issuer-name: ca-issuer
   volumeClaimTemplates:
