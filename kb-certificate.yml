@@ -9,7 +9,5 @@ spec:
   isCA: false
   dnsNames:
     - kb-clusterip-service
-  ipAddresses:
-    - 127.0.0.1
   issuerRef:
     name: ca-issuer
