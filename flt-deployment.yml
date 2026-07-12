@@ -60,6 +60,19 @@ spec:
           volumeMounts:
             - name: flt-certs-volume
               mountPath: /mnt/certs
+          startupProbe:
+            failureThreshold: 6
+            periodSeconds: 10
+            tcpSocket:
+              port: 8220
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /api/status
+              port: 8220
+              scheme: HTTPS
+            initialDelaySeconds: 60
+            periodSeconds: 10
       initContainers:
         - image: nicolaka/netshoot:latest
           name: flt-check-kb-running
