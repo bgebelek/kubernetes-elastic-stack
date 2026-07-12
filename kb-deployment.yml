@@ -31,11 +31,10 @@ spec:
               port: 5601
           readinessProbe:
             failureThreshold: 6
-            exec:
-              command:
-                - '/bin/bash'
-                - '-c'
-                - 'curl -sI --cacert /usr/share/kibana/config/certs/ca.crt https://127.0.0.1:5601/login?next=%2F | grep -q "HTTP/2 200"'
+            httpGet:
+              path: /api/status
+              port: 5601
+              scheme: HTTPS
             initialDelaySeconds: 60
             periodSeconds: 10
           env:
