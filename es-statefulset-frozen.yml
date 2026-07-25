@@ -91,5 +91,5 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        storageClassName: es-persistent-volume
+        storageClassName: local-path
 status: {}
