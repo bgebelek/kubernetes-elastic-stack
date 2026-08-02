@@ -26,7 +26,6 @@ resources:
   - kb-http-route.yml
   - kb-service-account-setup.yml
   - kb-service-certificate.yml
-  - kb-nodeport-service.yml
 
 labels:
   - pairs:
