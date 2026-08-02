@@ -18,7 +18,6 @@ resources:
   - flt-deployment.yml
   - flt-domain-certificate.yml
   - flt-http-route.yml
-  - flt-nodeport-service.yml
   - flt-service-certificate.yml
   - kb-auth-secret.yml
   - kb-btlspolicy.yml
