@@ -52,6 +52,7 @@ unzip ca.zip && rm ca.zip
 ```
 
 The extracted assets can be stored anywhere desired. Once relocated, replace the placeholders in `ca-tls-secret.yml` with base64-encoded values. Additionally, the CA certificate in ASCII (PEM) format must be added to the `xpack.fleet.outputs[n].ssl.certificate_authorities` setting in `kibana.yml`.
+TODO: instruct users to save cert in ca-configmap too.
 
 cert-manager is used for provisioning and maintaining digital certificates. Therefore, it must be installed in the Kubernetes cluster. To do so, please review their installation instructions [here](https://cert-manager.io/docs/installation/).
 
@@ -80,6 +81,8 @@ echo -n <key> | base64
 ```
 
 Place the encoded value in the `data` field of `kb-enc-key-secret.yml`.
+
+TODO: Instruct users to setup Traefik in k3s for the Gateway API.
 
 ### Applying Resources
 Now, resources can be applied with Kustomize as shown below:
