@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: elastic-gateway
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: kb-listener
+      hostname: kibana.elastic.com
+      port: 5601
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: kb-domain-tls-secret
