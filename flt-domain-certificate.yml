@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: flt-certificate
+  name: flt-domain-certificate
 spec:
-  secretName: flt-tls-secret
+  secretName: flt-domain-tls-secret
   duration: 8760h
   renewBefore: 360h
   isCA: false
   dnsNames:
-    - flt-clusterip-service
+    - fleet-server.elastic.com
   issuerRef:
     name: ca-issuer

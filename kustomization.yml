@@ -13,10 +13,13 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
-  - flt-certificate.yml
+  - flt-btlspolicy.yml
   - flt-clusterip-service.yml
   - flt-deployment.yml
+  - flt-domain-certificate.yml
+  - flt-http-route.yml
   - flt-nodeport-service.yml
+  - flt-service-certificate.yml
   - kb-auth-secret.yml
   - kb-btlspolicy.yml
   - kb-clusterip-service.yml

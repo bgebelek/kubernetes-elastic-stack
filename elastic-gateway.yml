@@ -13,3 +13,11 @@ spec:
         certificateRefs:
           - kind: Secret
             name: kb-domain-tls-secret
+    - name: flt-listener
+      hostname: fleet-server.elastic.com
+      port: 8220
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: flt-domain-tls-secret
