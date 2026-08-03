@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  ca.crt: |
+    Embed ASCII formatted certificate here.
+kind: ConfigMap
+metadata:
+  name: ca-configmap

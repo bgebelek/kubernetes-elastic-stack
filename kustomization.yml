@@ -1,6 +1,8 @@
 resources:
+  - ca-configmap.yml
   - ca-issuer.yml
   - ca-tls-secret.yml
+  - elastic-gateway.yml
   - es-auth-secret.yml
   - es-clusterip-service.yml
   - es-headless-service-cold-node-discovery.yml
@@ -11,17 +13,21 @@ resources:
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
   - es-statefulset-warm.yml
-  - flt-certificate.yml
+  - flt-btlspolicy.yml
   - flt-clusterip-service.yml
   - flt-deployment.yml
-  - flt-nodeport-service.yml
+  - flt-domain-certificate.yml
+  - flt-http-route.yml
+  - flt-service-certificate.yml
   - kb-auth-secret.yml
-  - kb-certificate.yml
+  - kb-btlspolicy.yml
   - kb-clusterip-service.yml
   - kb-enc-key-secret.yml
   - kb-deployment.yml
+  - kb-domain-certificate.yml
+  - kb-http-route.yml
   - kb-service-account-setup.yml
-  - kb-nodeport-service.yml
+  - kb-service-certificate.yml
 
 labels:
   - pairs:
