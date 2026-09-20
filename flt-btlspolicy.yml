@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: flt-btlspolicy
+spec:
+  targetRefs:
+    - name: flt-clusterip-service
+      kind: Service
+      group: ''
+  validation:
+    caCertificateRefs:
+      - name: ca-configmap
+        kind: ConfigMap
+        group: ''
+    hostname: flt-clusterip-service
+

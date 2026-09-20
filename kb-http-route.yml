@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kb-http-route
+spec:
+  hostnames:
+    - 'kibana.elastic.com'
+  parentRefs:
+    - kind: Gateway
+      name: elastic-gateway
+  rules:
+    - backendRefs:
+        - name: kb-clusterip-service
+          port: 5601
