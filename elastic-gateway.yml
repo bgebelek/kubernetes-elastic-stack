@@ -21,3 +21,11 @@ spec:
         certificateRefs:
           - kind: Secret
             name: flt-domain-tls-secret
+    - name: es-listener
+      hostname: elasticsearch.elastic.com
+      port: 9200
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: es-domain-tls-secret
