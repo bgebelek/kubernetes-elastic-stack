@@ -4,11 +4,14 @@ resources:
   - ca-tls-secret.yml
   - elastic-gateway.yml
   - es-auth-secret.yml
+  - es-btlspolicy.yml
   - es-clusterip-service.yml
+  - es-domain-certificate.yml
   - es-headless-service-cold-node-discovery.yml
   - es-headless-service-frozen-node-discovery.yml
   - es-headless-service-hot-node-discovery.yml
   - es-headless-service-warm-node-discovery.yml
+  - es-http-route.yml
   - es-statefulset-cold.yml
   - es-statefulset-frozen.yml
   - es-statefulset-hot.yml
