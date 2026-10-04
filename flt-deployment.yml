@@ -87,5 +87,5 @@ spec:
       volumes:
         - name: flt-certs-volume
           secret:
-            secretName: flt-tls-secret
+            secretName: flt-service-tls-secret
 status: {}

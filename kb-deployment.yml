@@ -81,5 +81,5 @@ spec:
             name: kb-configmap
         - name: kb-certs-volume
           secret:
-            secretName: kb-tls-secret
+            secretName: kb-service-tls-secret
 status: {}

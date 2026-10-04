@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: es-btlspolicy
+spec:
+  targetRefs:
+    - name: es-clusterip-service
+      kind: Service
+      group: ''
+  validation:
+    caCertificateRefs:
+      - name: ca-configmap
+        kind: ConfigMap
+        group: ''
+    hostname: es-clusterip-service
+
