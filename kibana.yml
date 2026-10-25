@@ -20,13 +20,25 @@ xpack:
       - name: Fleet Server Policy
         id: fleet-server-policy
         namespace: default
+        data_output_id: fleet-server-elasticsearch-output
+        monitoring_output_id: fleet-server-elasticsearch-output
+        fleet_server_host_id: fleet-server-host
         package_policies:
           - name: fleet_server
             package:
               name: fleet_server
     outputs:
-      - id: elasticsearch-output
-        name: Preconfigured Elasticsearch Output
+      - id: fleet-server-elasticsearch-output
+        name: Preconfigured Elasticsearch Output for Fleet Server
+        type: elasticsearch
+        hosts:
+          - https://es-clusterip-service:9200
+        ssl:
+          certificate_authorities:
+            - |
+              Embed ASCII formatted certificate here.
+      - id: elastic-agent-elasticsearch-output
+        name: Preconfigured Elasticsearch Output for Elastic Agent
         type: elasticsearch
         hosts:
           - https://es-clusterip-service:9200
@@ -36,5 +48,15 @@ xpack:
           certificate_authorities:
             - |
               Embed ASCII formatted certificate here.
+    fleetServerHosts:
+      - id: fleet-server-host
+        name: Preconfigured Fleet Server Host for Fleet Server
+        host_urls:
+          - https://flt-clusterip-service:8220
+      - id: elastic-agent-fleet-server-host
+        name: Preconfigured Fleet Server Host for Elastic Agent
+        host_urls:
+          - https://fleet-server.elastic.com:8220
+        is_default: true
   encryptedSavedObjects:
     encryptionKey: ${ENCRYPTION_KEY}
